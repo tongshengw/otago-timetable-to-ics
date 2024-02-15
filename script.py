@@ -4,19 +4,7 @@ import re
 import sys
 
 def parse (line, line1, objdate):
-    # details = line.split('\t')
-    # print (details)
-    # date, event_type_title = details[0], details[1].split(' - ')
-    # date = date.strip()
-    # course_code = line1.strip()
-    # time_range_type = event_type_title[0].split(' ')
-    # time_range = time_range_type[0]
-    # event_type = time_range_type[1]
-    # start_end_time = time_range.split('-')
-    # start_time, end_time = start_end_time[0], start_end_time [1]
-    # title = event_type_title[1]
 
-#10:00-11:00 Other Teaching - The Chemical Basis of Biology and Human Health
     details = line.split(' ', 1)
     time_range = details[0].split('-')
     start_time, end_time = time_range[0], time_range[1]
@@ -25,8 +13,6 @@ def parse (line, line1, objdate):
     course_code = line1.strip()
 
     events.append({"date":objdate.strftime('%d %B %Y'), "start_time": start_time, "end_time": end_time, "type": type, "course_name": title, "course_code": course_code})
-
-
 
 
 # Step 1: Parse the Text File
@@ -101,7 +87,5 @@ def main():
         create_ics_file(events, f'{type}.ics', type)
         print(f'made {type}.ics')
     
-
-
 
 main()
