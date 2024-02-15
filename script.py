@@ -54,7 +54,6 @@ def parse_text_to_events_array(file_path):
                 sys.exit(2)
 
         elif current_date and line1 != "" and line2 != "":
-
             parse (line1, line2, current_date)
             i+=2
 
