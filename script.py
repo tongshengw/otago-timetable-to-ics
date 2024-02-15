@@ -35,10 +35,11 @@ def parse_text_to_events_array(file_path):
     current_date = None
     with open(file_path, 'r') as file:
         lines = file.readlines()
+        lines.append("")
         # print (lines)
     
     i=0
-    while i < len(lines)-2:
+    while i < len(lines)-1:
         line1 = lines[i].strip()
         line2 = lines[i+1].strip()
         line3 = lines[i+2].strip()
@@ -62,7 +63,7 @@ def parse_text_to_events_array(file_path):
 
 
     # print('\n events')
-    # print (events)
+    print (events)
     return events
 
 # Step 2: Generate the .ics File
