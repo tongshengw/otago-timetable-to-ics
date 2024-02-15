@@ -92,4 +92,4 @@ for event in events:
         type_list.append(event["type"])
 
 for type in type_list:
-    create_ics_file(events, f'{type}_output.ics', type)
+    create_ics_file(events, f'{type}2024.ics', type)
