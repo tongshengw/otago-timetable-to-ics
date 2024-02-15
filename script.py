@@ -10,8 +10,8 @@ timezone = pytz.timezone("Pacific/Auckland")
 def parse (line, line1, objdate):
 
     details = line.split(' ', 1)
-    print(objdate.strftime('%d %B %Y'))
-    print(details)
+    # print(objdate.strftime('%d %B %Y'))
+    # print(details)
     time_range = details[0].split('-')
 
     start_time, end_time = time_range[0], time_range[1]
@@ -29,7 +29,7 @@ def parse_text_to_events_array(file_path):
     current_date = None
     with open(file_path, 'r') as file:
         lines = file.readlines()
-        lines.append("")
+        lines.append("lastline")
         # print (lines)
     
     #loops through all lines. needs one extra blank line in order to catch last event.
@@ -42,10 +42,12 @@ def parse_text_to_events_array(file_path):
         # if line1 contains a day of the week, parse line2 and line3. if not, parse line1 and line2
         if re.match(r'\w+day', line1):
             date_str = re.search(r'\d+\s+\w+\s+\d+', line2).group()
+            print(date_str + 'end')
             if date_str and line2 != "" and line3 != "":
                 current_date = datetime.strptime(date_str.strip(), '%d %B %Y')
+                print(line2)
                 pureline = line2.split('\t')
-                parse(pureline[1], line3, current_date)
+                parse(pureline[1].strip(), line3, current_date)
                 i+=3
             else:
                 print('error')
@@ -92,7 +94,7 @@ def main():
 
     for type in type_list:
         create_ics_file(events, f'{type}.ics', type)
-        print(f'made {type}.ics')
+        # print(f'made {type}.ics')
     
 
 main()
