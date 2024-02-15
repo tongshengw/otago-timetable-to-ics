@@ -2,11 +2,18 @@ from datetime import datetime
 import ics
 import re
 import sys
+import pytz
+
+global timezone
+timezone = pytz.timezone("Pacific/Auckland")
 
 def parse (line, line1, objdate):
 
     details = line.split(' ', 1)
+    print(objdate.strftime('%d %B %Y'))
+    print(details)
     time_range = details[0].split('-')
+
     start_time, end_time = time_range[0], time_range[1]
     type_title = details[1].split('-')
     type, title = type_title[0].strip(), type_title[1].strip()
@@ -62,8 +69,8 @@ def create_ics_file(events, output_file_name, type):
         if event["type"] == type:
             e = ics.Event()
             e.name = f'{event["course_code"]} ({event["type"]})'
-            e.begin = datetime.strptime(f'{event["date"]} {event["start_time"]}', '%d %B %Y %H:%M')
-            e.end = datetime.strptime(f'{event["date"]} {event["end_time"]}', '%d %B %Y %H:%M')
+            e.begin = timezone.localize(datetime.strptime(f'{event["date"]} {event["start_time"]}', '%d %B %Y %H:%M'))
+            e.end = timezone.localize(datetime.strptime(f'{event["date"]} {event["end_time"]}', '%d %B %Y %H:%M'))
             e.description = f'{event["course_name"]}, {event["type"]} ({event["course_code"]})'
             c.events.add(e)
     
