@@ -23,7 +23,7 @@ def parse (line, line1, objdate):
     type, title = type_title[0].strip(), type_title[1].strip()
     course_code = line1.strip()
 
-    events.append([objdate.strftime('%d %B %Y'), start_time, end_time, type, title, course_code])
+    events.append({"date":objdate.strftime('%d %B %Y'), "start_time": start_time, "end_time": end_time, "type": type, "course_name": title, "course_code": course_code})
 
 
 
@@ -62,7 +62,7 @@ def parse_text_to_events_array(file_path):
 
 
     # print('\n events')
-    print (events)
+    # print (events)
     return events
 
 # Step 2: Generate the .ics File
@@ -70,12 +70,12 @@ def create_ics_file(events, output_file_name, type):
     c = ics.Calendar()
     
     for event in events:
-        if event[3] == type:
+        if event["type"] == type:
             e = ics.Event()
-            e.name = f"{event[5]} ({event[3]})"
-            e.begin = datetime.strptime(f"{event[0]} {event[1]}", '%d %B %Y %H:%M')
-            e.end = datetime.strptime(f"{event[0]} {event[2]}", '%d %B %Y %H:%M')
-            e.description = f"{event[5]}, {event[4]} ({event[3]})"
+            e.name = f'{event["course_code"]} ({event["type"]})'
+            e.begin = datetime.strptime(f'{event["date"]} {event["start_time"]}', '%d %B %Y %H:%M')
+            e.end = datetime.strptime(f'{event["date"]} {event["end_time"]}', '%d %B %Y %H:%M')
+            e.description = f'{event["course_name"]}, {event["type"]} ({event["course_code"]})'
             c.events.add(e)
     
     with open(output_file_name, 'w') as file:
@@ -88,8 +88,8 @@ events = parse_text_to_events_array(file_path)
 type_list = []
 
 for event in events:
-    if event[3] not in type_list:
-        type_list.append(event[3])
+    if event['type'] not in type_list:
+        type_list.append(event["type"])
 
 for type in type_list:
-    create_ics_file(events, f'output_{type}.ics', type)
+    create_ics_file(events, f'{type}_output.ics', type)
